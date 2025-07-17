@@ -1,0 +1,53 @@
+
+{
+  "audio": {
+    "sample_rate": 16000,
+    "chunk_size": 4096,
+    "channels": 1,
+    "device_index": null,
+    "wake_word": "hey",
+    "silence_timeout": 3.0,
+    "energy_threshold": 300
+  },
+  "tts": {
+    "engine": "pyttsx3",
+    "rate": 180,
+    "volume": 0.8,
+    "voice_id": 0,
+    "available_voices": []
+  },
+  "llm": {
+    "backend": "ollama",
+    "ollama_url": "http://localhost:11434",
+    "lmstudio_url": "http://localhost:1234",
+    "model": "llama2:7b",
+    "temperature": 0.7,
+    "max_tokens": 512,
+    "context_window": 4096
+  },
+  "memory": {
+    "database_path": "./embeddings/memory.db",
+    "max_memories": 10000,
+    "similarity_threshold": 0.7,
+    "embedding_model": "all-MiniLM-L6-v2"
+  },
+  "computer_use": {
+    "safety_level": "safer",
+    "allowed_commands": ["file_operations", "system_info"],
+    "require_confirmation": true,
+    "log_actions": true
+  },
+  "visualization": {
+    "enabled": false,
+    "window_size": [400, 400],
+    "blob_color": [0, 255, 255, 128],
+    "background_color": [0, 0, 0, 0],
+    "animation_speed": 0.1
+  },
+  "general": {
+    "debug": true,
+    "log_level": "INFO",
+    "continuous_mode": true,
+    "auto_save_conversations": true
+  }
+}

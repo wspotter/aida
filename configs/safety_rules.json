@@ -1,0 +1,62 @@
+
+{
+  "safety_levels": {
+    "off": {
+      "description": "No computer use capabilities",
+      "allowed_actions": [],
+      "require_confirmation": false
+    },
+    "safer": {
+      "description": "Limited safe computer operations",
+      "allowed_actions": [
+        "file_read",
+        "file_write_user_dir",
+        "system_info",
+        "process_list",
+        "network_info",
+        "disk_usage",
+        "memory_usage",
+        "time_date"
+      ],
+      "require_confirmation": true,
+      "restricted_paths": [
+        "/etc",
+        "/usr",
+        "/bin",
+        "/sbin",
+        "/boot",
+        "/sys",
+        "/proc"
+      ]
+    },
+    "god": {
+      "description": "Full system access (use with extreme caution)",
+      "allowed_actions": [
+        "file_operations",
+        "system_commands",
+        "process_control",
+        "network_operations",
+        "application_control",
+        "system_configuration"
+      ],
+      "require_confirmation": true,
+      "log_all_actions": true
+    }
+  },
+  "blocked_commands": [
+    "rm -rf /",
+    "dd if=/dev/zero",
+    ":(){ :|:& };:",
+    "chmod -R 777 /",
+    "mkfs",
+    "fdisk"
+  ],
+  "sensitive_paths": [
+    "/etc/passwd",
+    "/etc/shadow",
+    "/etc/sudoers",
+    "/boot",
+    "/sys",
+    "/proc"
+  ]
+}
