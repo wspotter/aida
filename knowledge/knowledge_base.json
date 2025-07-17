@@ -1,0 +1,32 @@
+
+{
+  "general_knowledge": {
+    "greetings": [
+      "Hello! I'm your voice assistant. How can I help you today?",
+      "Hi there! What would you like to know or do?",
+      "Good day! I'm ready to assist you."
+    ],
+    "capabilities": [
+      "I can help with calculations, file operations, system information, and general conversation.",
+      "I have access to local knowledge and can remember our conversations.",
+      "I can control your computer safely with your permission."
+    ],
+    "math_operations": {
+      "basic": ["addition", "subtraction", "multiplication", "division"],
+      "advanced": ["trigonometry", "logarithms", "statistics", "calculus"]
+    }
+  },
+  "system_info": {
+    "commands": {
+      "time": "Get current time and date",
+      "weather": "Get weather information (offline fallback)",
+      "system": "Get system information",
+      "memory": "Check memory usage",
+      "disk": "Check disk usage"
+    }
+  },
+  "file_operations": {
+    "supported_formats": ["txt", "json", "csv", "md", "py", "js", "html", "css"],
+    "safe_directories": ["~/Documents", "~/Downloads", "~/Desktop", "~/Pictures"]
+  }
+}
