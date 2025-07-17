@@ -1,0 +1,15 @@
+[Unit]
+Description=Advanced Voice Assistant
+After=network.target sound.target
+
+[Service]
+Type=simple
+User=stacy
+WorkingDirectory=/home/stacy/ai-stack/aida
+Environment=PATH=/home/stacy/ai-stack/aida/venv/bin
+ExecStart=/home/stacy/ai-stack/aida/venv/bin/python /home/stacy/ai-stack/aida/src/voice_assistant.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
