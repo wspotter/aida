@@ -155,10 +155,6 @@ class VoiceAssistant:
             # Start visualizer
             if self.visualizer:
                 self.visualizer.start()
-  
- #           self.visualizer.visualizer.animation_loop()
-
-
             
             # Start listening for wake word
             self._start_wake_word_detection()

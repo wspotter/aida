@@ -38,7 +38,7 @@
     "log_actions": true
   },
   "visualization": {
-    "enabled": false,
+    "enabled": true,
     "window_size": [400, 400],
     "blob_color": [0, 255, 255, 128],
     "background_color": [0, 0, 0, 0],
