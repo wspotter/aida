@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Advanced Voice Assistant Setup Script
@@ -83,9 +82,9 @@ if [ -d "venv" ]; then
     rm -rf venv
 fi
 
-python3.10 -m venv env
+python3 -m venv venv
 
-source /home/stacy/ai-stack/aida/env/bin/activate
+source venv/bin/activate
 
 # Upgrade pip
 print_status "Upgrading pip..."
@@ -163,42 +162,15 @@ print_status "Creating launcher script..."
 cat > start_assistant.sh << 'EOF'
 #!/bin/bash
 cd "$(dirname "$0")"
-
-source /home/stacy/ai-stack/aida/env/bin/activate
-
-
-# Check if Ollama is running
+source venv/bin/activate
 if ! pgrep -x "ollama" > /dev/null; then
     echo "Starting Ollama..."
     ollama serve &
     sleep 3
 fi
-
-# Start the voice assistant
 python src/voice_assistant.py "$@"
 EOF
-
 chmod +x start_assistant.sh
-
-# Create systemd service file (optional)
-print_status "Creating systemd service template..."
-cat > voice-assistant.service << EOF
-[Unit]
-Description=Advanced Voice Assistant
-After=network.target sound.target
-
-[Service]
-Type=simple
-User=$USER
-WorkingDirectory=$(pwd)
-Environment=PATH=$(pwd)/venv/bin
-ExecStart=$(pwd)/venv/bin/python $(pwd)/src/voice_assistant.py
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-EOF
 
 print_success "Setup complete!"
 echo ""
@@ -216,23 +188,3 @@ echo ""
 echo "🎯 Quick test:"
 echo "   python -c \"from src.core.speech_engine import SpeechEngine; print('✓ Speech engine OK')\""
 echo ""
-
-# Test basic imports
-print_status "Testing basic imports..."
-source /home/stacy/ai-stack/aida/env/bin/activate
-python -c "
-try:
-    from src.core.speech_engine import SpeechEngine
-    from src.memory_manager import MemoryManager
-    from src.llm_backend import LLMBackend
-    print('✓ All core modules imported successfully')
-except Exception as e:
-    print(f'✗ Import error: {e}')
-    exit(1)
-"
-
-if [ $? -eq 0 ]; then
-    print_success "All components ready!"
-else
-    print_error "Some components failed to import. Check the error messages above."
-fi
