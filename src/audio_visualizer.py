@@ -14,7 +14,7 @@ import pygame
 import numpy as np
 from collections import deque
 
-from  utils.config_loader import ConfigLoader
+from utils.config_loader import ConfigLoader
 
 
 class AudioVisualizer:
@@ -69,18 +69,35 @@ class AudioVisualizer:
     def _initialize_pygame(self):
         """Initialize pygame for visualization."""
         try:
+            # Check if we have a display available
+            import os
+            if not os.environ.get('DISPLAY') and os.name == 'posix':
+                self.logger.warning("No display available, running in headless mode")
+                # Set SDL to use dummy video driver for headless mode
+                os.environ['SDL_VIDEODRIVER'] = 'dummy'
+            
             pygame.init()
             pygame.mixer.init()
             
-            # Set up display with transparency support
-            self.screen = pygame.display.set_mode(
-                self.window_size, 
-                pygame.SRCALPHA | pygame.NOFRAME
-            )
-            pygame.display.set_caption("Voice Assistant Visualizer")
-            
-            # Set window to be always on top and transparent
-            self._setup_transparent_window()
+            # Try to set up display with transparency support
+            try:
+                self.screen = pygame.display.set_mode(
+                    self.window_size, 
+                    pygame.SRCALPHA | pygame.NOFRAME
+                )
+                pygame.display.set_caption("Voice Assistant Visualizer")
+                
+                # Set window to be always on top and transparent
+                self._setup_transparent_window()
+                
+            except pygame.error as e:
+                self.logger.warning(f"Could not create windowed display: {e}")
+                # Fallback to basic display mode
+                self.screen = pygame.display.set_mode(
+                    self.window_size, 
+                    pygame.SRCALPHA
+                )
+                pygame.display.set_caption("Voice Assistant Visualizer")
             
             self.clock = pygame.time.Clock()
             
@@ -91,6 +108,7 @@ class AudioVisualizer:
             
         except Exception as e:
             self.logger.error(f"Failed to initialize pygame: {e}")
+            self.logger.info("Disabling visualization due to initialization failure")
             self.enabled = False
     
     def _setup_transparent_window(self):
@@ -483,14 +501,29 @@ class AudioVisualizerManager:
         self.config = ConfigLoader(config_path).get_config()
         self.logger = logging.getLogger(__name__)
         
+        # Import web visualizer
+        try:
+            from web_visualizer import WebAudioVisualizer
+            web_viz_available = True
+        except ImportError as e:
+            self.logger.warning(f"Web visualizer not available: {e}")
+            web_viz_available = False
+        
         # Available visualizers
         self.visualizers = {
             "blob": AudioVisualizer(config_path),
-            # Could add more visualizer types here
         }
         
-        self.current_visualizer = "blob"
+        # Add web visualizer if available
+        if web_viz_available:
+            self.visualizers["web"] = WebAudioVisualizer(config_path)
+        
+        # Choose default visualizer (prefer web for better compatibility)
+        self.current_visualizer = "web" if web_viz_available else "blob"
         self.active_visualizer = self.visualizers[self.current_visualizer]
+        
+        self.logger.info(f"Available visualizers: {list(self.visualizers.keys())}")
+        self.logger.info(f"Active visualizer: {self.current_visualizer}")
     
     def start(self):
         """Start the active visualizer."""

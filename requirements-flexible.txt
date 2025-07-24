@@ -1,0 +1,31 @@
+# AIDA Voice Assistant - Flexible Dependencies
+# Use version ranges instead of pinned versions to avoid conflicts
+
+# Core voice processing
+vosk>=0.3.40
+pyttsx3>=2.90
+pyaudio>=0.2.11
+speechrecognition>=3.10.0
+
+# AI and NLP
+ollama>=0.1.7
+spacy>=3.7.0,<4.0.0
+chromadb>=0.4.0,<1.0.0
+sentence-transformers>=2.2.0,<3.0.0
+
+# Audio visualization
+pygame>=2.5.0
+numpy>=1.24.0  # Allow newer versions
+matplotlib>=3.7.0
+
+# System and utilities
+psutil>=5.9.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+colorama>=0.4.6
+rich>=13.5.0
+
+# Development (optional)
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.0.0
